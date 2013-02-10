@@ -2,7 +2,8 @@
 
 _**Note:** The following description, and the code, were written in the year
 2000.  This code only runs on Windows, only 32-bit, and only Intel.  Also, I
-haven't tried it on any version of Windows past Windows XP._
+haven't tried it on any version of Windows past Windows XP, or any recent
+version of Visual C++._
 
 This is a debugging helper class which lets you set breakpoints on the fly from
 within code. This is mainly useful for the case where you have a variable that
@@ -41,7 +42,7 @@ object falls out of scope. Or, to clear it explicitly, do this:
     bp.Clear();
 ```
 
-You can also break the moment any code even tries to read the value of the
+You can also break the moment any code even tries to _read_ the value of the
 variable x! (Actually, this will break when someone tries to read _or_ write
 it.)
 
@@ -51,28 +52,19 @@ it.)
 
 ## Notes
 
-This code is Intel-specific. It will run on Win95/98/ME and on WinNT/2000/XP,
-as long as the machine is running an Intel or compatible chip (e.g. not Alpha).
+This code is Intel-specific. I have tested it on versions of Windows up to and
+including Windows XP.  I have not tried it on AMD chips.
 
 There are certain limitations when the breakpoint is triggered inside system
 code (these same limitations apply to hardware breakpoints set by Visual C++ or
-any other debugger):
+any other debugger).  Some system code runs in ring 3 (with user privileges),
+and other system code runs in ring 0. If a hardware breakpoint triggers inside
+ring 0 code, the debugger _will_ stop, but not exactly when the data write
+happens -- it will stop after execution transitions back to ring 3 code. In
+practice, this is not a problem at all: When the breakpoint triggers, it's
+usually quite easy to figure out what happened.
 
-*   On WinNT/2000/XP, some system code runs in ring 3 (with user privileges),
-    and other system code runs in ring 0. If a hardware breakpoint triggers
-    inside ring 0 code, the debugger *will* stop, but not exactly when the data
-    write happens -- it will stop after execution transitions back to ring 3
-    code. In practice, this is not a problem at all -- when the breakpoint
-    triggers, it's usually quite easy to figure out what happened.
-*   On Win95/98/ME, the situation is not as good. _All_ system code is treated
-    by the debugger as untouchable. Worse, whenever any hardware breakpoint
-    triggers inside system code, you'll never see the breakpoint trigger. For
-    example, if a call to strcpy() would cause your breakpoint to trigger,
-    you'll see it, because strcpy() is just a regular part of your application.
-    But if a call to lstrcpy() would cause your breakpoint to trigger, you
-    won't see it, because lstrcpy() is system code.
-
-You can do "bp.Clear()" from the QuickWatch dialog to clear a breakpoint from
+You can do `bp.Clear()` from the QuickWatch dialog to clear a breakpoint from
 within the debugger.
 
 The second parameter is the number of bytes to watch. This _must_ be either 1,
