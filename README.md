@@ -1,5 +1,9 @@
 # Hardware breakpoints
 
+_**Note:** The following description, and the code, were written in the year
+2000.  This code only runs on Windows, only 32-bit, and only Intel.  Also, I
+haven't tried it on any version of Windows past Windows XP._
+
 This is a debugging helper class which lets you set breakpoints on the fly from
 within code. This is mainly useful for the case where you have a variable that
 you know is getting trashed, but you have no idea who is trashing it. You can
