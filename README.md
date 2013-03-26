@@ -1,9 +1,9 @@
 # Hardware breakpoints
 
 _**Note:** The following description, and the code, were written in the year
-2000.  This code only runs on Windows, only 32-bit, and only Intel.  Also, I
-haven't tried it on any version of Windows past Windows XP, or any recent
-version of Visual C++._
+2000.  This code only runs on Windows, and only 32-bit.  Also, I haven't tried
+it on any version of Windows past Windows XP, or any recent version of Visual
+C++._
 
 This is a debugging helper class which lets you set breakpoints on the fly from
 within code. This is mainly useful for the case where you have a variable that
@@ -12,7 +12,7 @@ cause the debugger to break in at the very moment the variable is changed. The
 really cool thing is that this makes use of the Intel Pentium's built-in debug
 registers, which means that it really will stop no matter _what_ code is
 executing, even if it's down in the NT kernel, in a different thread, or
-whatever.
+whatever. This code also apparently works fine on some AMD CPUs.
 
 (Visual C++ has the ability to set a breakpoint when a variable's value
 changes, but these breakpoints can be very hard to use, especially on local
@@ -52,8 +52,9 @@ it.)
 
 ## Notes
 
-This code is Intel-specific. I have tested it on versions of Windows up to and
-including Windows XP.  I have not tried it on AMD chips.
+I've tested this code on versions of Windows up to and including Windows XP.  I
+have only tried it on Intel chips, but another developer told me that it worked
+for him on the AMD Athlon II X2 250.
 
 There are certain limitations when the breakpoint is triggered inside system
 code (these same limitations apply to hardware breakpoints set by Visual C++ or
